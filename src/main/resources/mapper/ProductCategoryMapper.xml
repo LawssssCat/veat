@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vshop.veat.mapper.ProductCategoryMapper">
+    <resultMap id="BaseResultMap" type="com.vshop.veat.entity.ProductCategory">
+        <id column="product_category_id" jdbcType="INTEGER" property="productCategoryId"/>
+        <result column="product_category_name" jdbcType="VARCHAR" property="productCategoryName"/>
+        <result column="product_category_type" jdbcType="INTEGER" property="productCategoryType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    product_category_id, product_category_name, product_category_type, create_time, update_time
+  </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ve_product_category
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ve_product_category
+        where product_category_id = #{productCategoryId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByProductCategoryType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ve_product_category
+        where product_category_type = #{productCategoryType,jdbcType=INTEGER}
+    </select>
+    <select id="selectListProductCategoryByType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ve_product_category
+        <where>
+        1=2
+        <if test="productCategroyTypeList!=null">
+            <foreach collection="productCategroyTypeList" item="productCategroyType" >
+                or product_category_type = #{productCategroyType}
+            </foreach>
+        </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ve_product_category
+    where product_category_id = #{productCategoryId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="product_category_id" keyProperty="productCategoryId"
+            parameterType="com.vshop.veat.entity.ProductCategory" useGeneratedKeys="true">
+    insert into ve_product_category (product_category_name, product_category_type, 
+      create_time, update_time)
+    values (#{productCategoryName,jdbcType=VARCHAR}, #{productCategoryType,jdbcType=INTEGER}, 
+      now(), now())
+  </insert>
+    <insert id="insertSelective" keyColumn="product_category_id" keyProperty="productCategoryId"
+            parameterType="com.vshop.veat.entity.ProductCategory" useGeneratedKeys="true">
+        insert into ve_product_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productCategoryName != null">
+                product_category_name,
+            </if>
+            <if test="productCategoryType != null">
+                product_category_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productCategoryName != null">
+                #{productCategoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="productCategoryType != null">
+                #{productCategoryType,jdbcType=INTEGER},
+            </if>
+            now() ,now()
+            <!--<if test="createTime != null">
+              #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+              #{updateTime,jdbcType=TIMESTAMP},
+            </if>-->
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.vshop.veat.entity.ProductCategory">
+        update ve_product_category
+        <set>
+            <if test="productCategoryName != null">
+                product_category_name = #{productCategoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="productCategoryType != null">
+                product_category_type = #{productCategoryType,jdbcType=INTEGER},
+            </if>
+            update_time = now()
+            <!--<if test="createTime != null">
+              create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+              update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>-->
+        </set>
+        where product_category_id = #{productCategoryId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.vshop.veat.entity.ProductCategory">
+        update ve_product_category
+        set product_category_name = #{productCategoryName,jdbcType=VARCHAR},
+        product_category_type = #{productCategoryType,jdbcType=INTEGER},
+        <!--create_time = #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}-->
+        update_time = now()
+        where product_category_id = #{productCategoryId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -9,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,7 +24,7 @@ import java.util.Set;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProductCategoryTest {
+public class ProductCategoryMapperTest {
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
 
@@ -45,7 +44,7 @@ public class ProductCategoryTest {
         productCategory.setProductCategoryType(10);
         log.info(String.valueOf(productCategoryMapper.updateById(productCategory)));
         // 根据type查找
-        List<ProductCategory> productCategories = productCategoryMapper.selectByProductCategoryTypeList(Arrays.asList(new Integer[]{10}));
+        Collection<ProductCategory> productCategories = productCategoryMapper.selectByProductCategoryTypeList(Arrays.asList(new Integer[]{10})).values();
         log.info(productCategories.toString());
     }
 
@@ -60,11 +59,11 @@ public class ProductCategoryTest {
             types.add(category.getProductCategoryType());
         }
         // 根据type查找
-        List<ProductCategory> cs = productCategoryMapper.selectByProductCategoryTypeList(types);
+        Collection<ProductCategory> cs = productCategoryMapper.selectByProductCategoryTypeList(types).values();
         log.info("size:{}", cs.size());
         log.info(cs.toString());
         // 空查找
-        List<ProductCategory> cs2 = productCategoryMapper.selectByProductCategoryTypeList(null);
+        Collection<ProductCategory> cs2 = productCategoryMapper.selectByProductCategoryTypeList(null).values();
         log.info(cs2.toString());
     }
 

@@ -4,6 +4,11 @@ spring:
     username: root
     password: root
     url: jdbc:mysql://192.168.56.10:3306/ve_db?characterEncoding=utf8&
-
-mybatis:
-  mapper-locations: classpath:/mapper/*.xml
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-enums-package: com.vshop.veat.enums
+server:
+  servlet:
+    context-path: /sell
